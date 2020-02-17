@@ -4,7 +4,7 @@ pipeline {
         PROJECT_ID = 'endless-gamma-237509'
         CLUSTER_NAME = 'mycluster'
         LOCATION = 'us-west1-c'
-        CREDENTIALS_ID = 'gke'
+        CREDENTIALS_ID = 'endless-gamma-237509'
     }
     stages {
         stage("Checkout code") {
