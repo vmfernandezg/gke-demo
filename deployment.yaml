@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: hello
-  namespace: pruebas
+  namespace: vfernandezg
 spec:
   selector:
       matchLabels:
@@ -24,7 +24,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello
-  namespace: pruebas
+  namespace: vfernandezg
 spec:
   selector:
     app: hello
