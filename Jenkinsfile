@@ -15,7 +15,7 @@ pipeline {
         stage("Build image") {
             steps {
                 script {
-                    sh "whoami"
+                    sh "su - tomcat; whoami"
                     myapp = docker.build("vfernandezg/hello:${env.BUILD_ID}")
                 }
             }
