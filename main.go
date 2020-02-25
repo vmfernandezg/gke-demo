@@ -19,7 +19,7 @@ func main() {
 	port := getEnv("PORT", "8080")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Isn't this swell?")
+		fmt.Fprintf(w, "¿NO ES ESTO GENIAL...?")
 	})
 
 	http.ListenAndServe(":"+port, nil)
