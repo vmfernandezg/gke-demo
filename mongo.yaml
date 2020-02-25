@@ -24,7 +24,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo
-    namespace: afernandezm
+  namespace: afernandezm
 spec:
   selector:
     matchLabels:
