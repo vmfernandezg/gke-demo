@@ -1,35 +1,39 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: hello
-  namespace: vfernandezg
-spec:
-  selector:
-      matchLabels:
-        app: hello
-  replicas: 1
-  template:
-      metadata:
-        labels:
-            app: hello
-      spec:
-        containers:
-        - name: hello
-          image: vfernandezg/hello:latest
-          imagePullPolicy: Always
-          ports:
-          - containerPort: 5000
----
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello
-  namespace: vfernandezg
+  name: gosample
 spec:
-  selector:
-    app: hello
   ports:
-  - protocol: TCP
-    port: 5000
-    targetPort: 5000
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: gosample
   type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gosample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gosample
+  template:
+    metadata:
+      labels:
+        app: gosample
+    spec:
+      containers:
+      - name: gosample
+        image: vfernandezg/gosample:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+          limits:
+            cpu: 1000m
+            memory: 2048Mi

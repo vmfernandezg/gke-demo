@@ -1,21 +1,29 @@
-FROM bitnami/node:9 as builder
-ENV NODE_ENV="production"
+# argument for Go version
+ARG GO_VERSION=1.12
 
-# Copy app's source code to the /app directory
-COPY . /app
 
-# The application's directory will be the working directory
-WORKDIR /app
+# STAGE 1: building the executable
+FROM golang:${GO_VERSION}-alpine AS build
 
-# Install Node.js dependencies defined in '/app/packages.json'
-RUN npm install
+# Working directory will be created if it does not exist
+WORKDIR /src
 
-FROM bitnami/node:9-prod
-ENV NODE_ENV="production"
-COPY --from=builder /app /app
-WORKDIR /app
-ENV PORT 5000
-EXPOSE 5000
+# Import code
+COPY ./ ./
 
-# Start the application
-CMD ["npm", "start"]
+# Build the executable
+RUN CGO_ENABLED=0 go build \
+	-installsuffix 'static' \
+	-o /app .
+
+# STAGE 2: build the container to run
+FROM scratch AS final
+
+# copy compiled app
+COPY --from=build /app /app
+
+# expose port 8080
+EXPOSE 8080
+
+# run binary
+ENTRYPOINT ["/app"]
