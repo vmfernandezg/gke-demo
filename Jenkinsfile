@@ -34,14 +34,16 @@ pipeline {
         }        
         stage('Deploy to GKE test cluster') {
             steps{
-                sh "sed -i 's/knote-js:latest/knote-js:${env.BUILD_ID}/g' deployment.yaml"
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME_TEST, location: env.LOCATION_TEST, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
+                sh "sed -i 's/knote-js:latest/knote-js:${env.BUILD_ID}/g' knote.yaml"
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME_TEST, location: env.LOCATION_TEST, manifestPattern: 'knote.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME_TEST, location: env.LOCATION_TEST, manifestPattern: 'mongo.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
             }
         }
         stage('Deploy to GKE production cluster') {
             steps{
                 input message:"Proceed with final deployment?"
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME_PROD, location: env.LOCATION_PROD, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME_PROD, location: env.LOCATION_PROD, manifestPattern: 'knote.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME_PROD, location: env.LOCATION_PROD, manifestPattern: 'mongo.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
             }
         }
     }    
