@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,14 +17,14 @@ spec:
         app: knote
     spec:
       containers:
-        - name: app
-          image: vfernandezg/knote-js:latest
-          ports:
-            - containerPort: 3000
-          env:
-            - name: MONGO_URL
-              value: mongodb://mongo:27017/dev
-          imagePullPolicy: Always
+      - name: app
+        image: vfernandezg/knote-js:55
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGO_URL
+          value: mongodb://mongo:27017/dev
+        imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
@@ -34,6 +35,6 @@ spec:
   selector:
     app: knote
   ports:
-    - port: 80
-      targetPort: 3000
+  - port: 80
+    targetPort: 3000
   type: LoadBalancer
